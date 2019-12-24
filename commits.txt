@@ -1,0 +1,3 @@
+Primer commit:
+  * Este es el primer commit del cliente para el consumo de la API NaTest, desarrollada por mi persona.
+  * En este commit están todos los primero cambios realizados a este proyecto.
