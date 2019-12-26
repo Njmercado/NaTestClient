@@ -7,11 +7,20 @@
         <ChoicesPicker
           :choices="subjects"
           :chosen="chosenSubjectsFromSearch"
+          :open="openCloseChoicesPicker"
           title="Cursos"
           subtitle="seleccione los cursos deseados"
           @chosen="selected"
         >
         </ChoicesPicker>
+
+        <v-btn 
+          color="deep-purple accent-4" 
+          icon small text
+          @click="openCloseChoicesPickerHandler"
+        >
+          <v-icon>mdi-plus</v-icon>
+        </v-btn>
       </v-row>
       <v-row>
         <v-chip
@@ -28,7 +37,7 @@
 
 <script>
 import ChoicesPicker from "./ChoicesPicker.vue";
-import {mapGetters} from "vuex"
+import {mapGetters, mapMutations} from "vuex"
 export default {
   name: "CoursesSelector",
   props:{
@@ -39,30 +48,34 @@ export default {
   data: () => ({
     subjects: [],
     chosenSubjects: [],
-    chosenSubjectsFromSearch: []//cuando se realiza
+    chosenSubjectsFromSearch: [],//cuando se realiza
     //una busqueda esta variable me permitirá
     //almacenar la informacion y marcar en el modal
     //de cursos los cursos del estudiante correspondiente
+    openCloseChoicesPicker: false
   }),
-  mounted(){
-    //este timeout me permitirá obtener la informacion 
-    //de los cursos disponibles.
-    //Uso este metodo porque necesito que la lista de 
-    //los cursos se ingrese el modal que permitirá verlos,
-    //pero se tiene que hacer cuando el elemento se
-    //está creando, montando.
-    setTimeout(() => {
-      this.subjects = this.getSubjectsList
-      this.subjects = this.subjects.map(el => ({title:el,description:"description"}))
-    }, 250)
-  },
   methods: {
+    ...mapMutations(["setSubjectsList"]),
     selected(chosenElements) {
       this.chosenSubjects = [];
       for(var subject of chosenElements) {
         this.chosenSubjects.push(this.subjects[subject].title);
       }
       this.$emit('chosen', this.chosenSubjects)
+    },
+    async openCloseChoicesPickerHandler(){
+      //este timeout me permitirá obtener la informacion 
+      //de los cursos disponibles.
+      //Uso este metodo porque necesito que la lista de 
+      //los cursos se ingrese el modal que permitirá verlos,
+      //pero se tiene que hacer cuando el elemento se
+      //está creando, montando.
+      await this.setSubjectsList()
+      await setTimeout(() => {
+        this.subjects = this.getSubjectsList
+        this.subjects = this.subjects.map(el => ({title:el,description:"description"}))
+      }, 500)
+      this.openCloseChoicesPicker = await !this.openCloseChoicesPicker
     }
   },
   watch:{

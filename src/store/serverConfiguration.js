@@ -1,7 +1,7 @@
 import axios from "axios"
 
-//const serverName = "http://localhost:3000"
-const serverName = "http://server-natitest.herokuapp.com"
+const serverName = "http://localhost:3000"
+//const serverName = "https://server-natitest.herokuapp.com"
 
 class Server {
 

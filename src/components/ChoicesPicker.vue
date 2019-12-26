@@ -2,13 +2,7 @@
   <div>
     <v-dialog max-width="20em" v-model="openDialog" persistent>
       <template v-slot:activator="{ on }">
-        <v-btn 
-          color="deep-purple accent-4" 
-          v-on="on"
-          icon small text
-        >
-          <v-icon>mdi-plus</v-icon>
-        </v-btn>
+        <v-icon v-on="on" ref="activator"></v-icon>
       </template>
 
       <v-card>
@@ -67,7 +61,8 @@ export default {
     subtitle: String,
     chosen:{
       type: Array,
-    }
+    },
+    open: Boolean,
   },
   data: () => ({
     openDialog: false,
@@ -85,6 +80,9 @@ export default {
         this.chosenSubjects = chosenElements
       }
     },
+    open(){
+      this.$refs.activator.$el.click()
+    }
   },
 } 
 </script>
